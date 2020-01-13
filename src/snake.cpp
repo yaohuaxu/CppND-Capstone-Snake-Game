@@ -20,7 +20,7 @@ void Snake::Update() {
 }
 
 void Snake::UpdateHead() {
-  switch (direction) {
+  switch (direction_) {
     case Direction::kUp:
       head_y_ -= speed_;
       break;
