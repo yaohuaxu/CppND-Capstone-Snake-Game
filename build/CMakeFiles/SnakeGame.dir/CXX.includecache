@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/a_star.cpp
+a_star.h
+/home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/a_star.h
+iostream
+-
+algorithm
+-
+
+/home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/a_star.h
+vector
+-
+SDL.h
+/home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/SDL.h
+
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/controller.cpp
 controller.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/controller.h
@@ -49,6 +63,8 @@ game.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/game.h
 renderer.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/renderer.h
+a_star.h
+/home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/a_star.h
 
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/renderer.cpp
 renderer.h

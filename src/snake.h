@@ -34,7 +34,7 @@ class Snake {
   bool growing_{false};
   int grid_width_;
   int grid_height_;
-  float speed_{0.1f};
+  float speed_{0.0f};
   int size_{1};
   bool alive_{true};
   float head_x_;
