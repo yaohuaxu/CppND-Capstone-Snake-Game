@@ -22,10 +22,10 @@ AStar::AStar(const std::size_t screen_width, const std::size_t screen_height,
     cout << "board_[0].size(): " << board_[0].size() << endl;
 /****search test****/
     SDL_Point start, end;
-    start.x = 1;
-    start.y = 1;
-    end.x = 12;
-    end.y = 12;
+    start.x = 0;
+    start.y = 0;
+    end.x = 2;
+    end.y = 2;
     vector<SDL_Point> SDL_Points = Search(start, end);
 
     cout << "SDL_Points.size(): " << SDL_Points.size() << endl;
@@ -52,11 +52,6 @@ AStar::~AStar() {
 int AStar::Heuristic(const int start_point_x, const int start_point_y, const int end_point_x, const int end_point_y) {
     return abs(end_point_x - start_point_x) + abs(end_point_y - start_point_y);
 }
-void AStar::AddToOpenList(const int x, const int y, const int g_cost, const int h_cost,
-                          vector<vector<int>> &open_list, vector<vector<State>> &board) {
-    open_list.emplace_back(vector<int> { x, y, g_cost, h_cost });
-    board[x][y] = State::kClosed;
-}
 
 bool AStar::IsVaildPoint(const int x, const int y, const vector<vector<State>> &board_) {
     const bool on_board_x = (x >= 0 && x < board_.size());
@@ -69,45 +64,67 @@ bool AStar::IsVaildPoint(const int x, const int y, const vector<vector<State>> &
     }
 }
 
-void AStar::ExpandNeighbors(const vector<int> &current, const SDL_Point &end_point,
-                            vector<vector<int>> &open_list, vector<vector<State>> &board_) {
-    const int x = current[0];
-    const int y = current[1];
-    const int g_cost = current[2];
+void AStar::ExpandNeighbors(Node *current, const SDL_Point &end_point,
+                            vector<Node> &open_list, vector<vector<State>> &board_) {
+    Node node;
 
     for (int i = 0;  i < 4; i++) {
-        const int x_new = x + delta_[i][0];
-        const int y_new = y + delta_[i][1];
-
+        const int x_new = current->x + delta_[i][0];
+        const int y_new = current->y + delta_[i][1];
+        cout << i << ", current->x: " << current->x << ", current->y: " << current->y << ", delta_[i][0]: " << delta_[i][0] << ", delta_[i][1]: " << delta_[i][1] << ", x_new: " << x_new << ", y_new: " << y_new << endl;
         if (IsVaildPoint(x_new, y_new, board_)) {
-            const int g_new = g_cost + 1;
-            const int h_new = Heuristic(x_new, y_new, end_point.x, end_point.y);
-            AddToOpenList(x_new, y_new, g_new, h_new, open_list, board_);
+            node.parent = current;
+            node.x = x_new;
+            node.y = y_new;
+            node.g_cost = current->g_cost + 1;
+            node.h_cost = Heuristic(x_new, y_new, end_point.x, end_point.y);
+            current->neighbors.push_back(node);
+            cout << ", parent: " << current << endl;
         }
+    }
+
+    for (const auto &neighbor : current->neighbors) {
+        open_list.push_back(neighbor);
+        board_[neighbor.x][neighbor.y] = State::kClosed;
+        // cout << "x: " << node.x << ", y: " << node.y << ", parent: " << current << ", neighbor: " << &neighbor << endl;
     }
 }
 
 vector<SDL_Point> AStar::Search(const SDL_Point &start_point, const SDL_Point &end_point) {
-    vector<vector<int>> open_list{0};
+    vector<Node> open_list{};
     vector<SDL_Point> SDL_Points{};
     SDL_Point SDL_point;
 
-    const int g_cost = 0;
-    const int h_cost = Heuristic(start_point.x, start_point.y, end_point.x, end_point.y);
-    AddToOpenList(start_point.x, start_point.y, g_cost, h_cost, open_list, board_);
+    Node node;
+    node.parent = nullptr;
+    node.x = start_point.x;
+    node.y = start_point.y;
+    node.g_cost = 0;
+    node.h_cost = Heuristic(start_point.x, start_point.y, end_point.x, end_point.y);
+    open_list.push_back(node);
 
     while (not open_list.empty()) {
-        std::sort(open_list.begin(), open_list.end(), [](const vector<int> a, const vector<int> b){ return (a[2] + a[3]) > (b[2] + b[3]); });
-        const auto current = open_list.back();
+        std::sort(open_list.begin(), open_list.end(), [](const Node &a, const Node &b){ return (a.g_cost + a.h_cost) > (b.g_cost + b.h_cost); });
+        Node *current = &open_list.back();
         open_list.pop_back();
 
-        board_[current[0]][current[1]] = State::kPath;
-        SDL_point.x = current[0];
-        SDL_point.y = current[1];
-        SDL_Points.emplace_back(SDL_point);
+        board_[current->x][current->y] = State::kPath;
 
-        if (current[0] == end_point.x && current[1] == end_point.y) {
+        if (current->x == end_point.x && current->y == end_point.y) {
+            Node *node = current;
+                            cout << "....x: " << node->x << ", y: " << node->y << ", parent: " << node->parent << endl;
+            // while (nullptr != node) {
+            //     SDL_point.x = node->x;
+            //     SDL_point.y = node->y;
+            //     SDL_Points.push_back(SDL_point);
+
+            //     cout << "x: " << node->x << ", y: " << node->y << ", parent: " << node->parent << endl;
+            //     node = node->parent;
+            // }
+
+            // std::reverse(SDL_Points.begin(), SDL_Points.end());
             cout << "A* search OK!" << endl;
+
             return SDL_Points;
         }
 

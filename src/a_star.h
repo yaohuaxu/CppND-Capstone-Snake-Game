@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "SDL.h"
+#include <limits>
 
 using std::vector;
 
@@ -11,6 +12,16 @@ enum class State {
     kObstacle = 1,
     kClosed = 2,
     kPath = 3
+};
+
+class Node {
+public:
+    Node *parent = nullptr;
+    int x = 0;
+    int y = 0;
+    int g_cost = 0;
+    int h_cost = std::numeric_limits<int>::max();
+    std::vector<Node> neighbors;
 };
 
 class AStar {
@@ -23,10 +34,8 @@ private:
     vector<vector<State>> board_;
     int delta_[4][2]{ {-1, 0}, {0, -1}, {1, 0}, {0, 1} };
     int Heuristic(const int start_point_x, const int start_point_y, const int end_point_x, const int end_point_y);
-    void AddToOpenList(const int x, const int y, const int g_cost, const int h_cost,
-                       vector<vector<int>> &open_list, vector<vector<State>> &board);
-    void ExpandNeighbors(const vector<int> &current, const SDL_Point &end_point,
-                         vector<vector<int>> &open_list, vector<vector<State>> &board_);
+    void ExpandNeighbors(Node *current, const SDL_Point &end_point,
+                         vector<Node> &open_list, vector<vector<State>> &board_);
     bool IsVaildPoint(const int x, const int y, const vector<vector<State>> &board_);
 };
 
