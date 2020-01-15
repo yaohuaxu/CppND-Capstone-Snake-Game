@@ -79,6 +79,9 @@ vector<SDL_Point> AStar::Search(const SDL_Point &start_point, const SDL_Point &e
     node.y = start_point.y;
     node.g_cost = 0;
     node.h_cost = Heuristic(start_point.x, start_point.y, end_point.x, end_point.y);
+    node.state = State::kOpen;
+    nodes_[node.x][node.y].x = node.x;
+    nodes_[node.x][node.y].y = node.y;
     open_list_.push_back(node);
 
     while (not open_list_.empty()) {
@@ -91,12 +94,12 @@ vector<SDL_Point> AStar::Search(const SDL_Point &start_point, const SDL_Point &e
         for (int i = 0;  i < 4; i++) {
             const int x_next = current->x + delta_[i][0];
             const int y_next = current->y + delta_[i][1];
-            Node *node_next = &nodes_[x_next][y_next];
 
             if (not IsInRange(x_next, y_next)) {
                 continue;
             }
 
+            Node *node_next = &nodes_[x_next][y_next];
             node_next->x = x_next;
             node_next->y = y_next;
 
@@ -110,7 +113,6 @@ vector<SDL_Point> AStar::Search(const SDL_Point &start_point, const SDL_Point &e
                     SDL_point.x = node_next->x;
                     SDL_point.y = node_next->y;
                     SDL_Points.push_back(SDL_point);
-
                     node_next->state = State::kPath;
                     node_next = node_next->parent;
                 }
@@ -118,18 +120,18 @@ vector<SDL_Point> AStar::Search(const SDL_Point &start_point, const SDL_Point &e
                 std::reverse(SDL_Points.begin(), SDL_Points.end());
                 cout << "A* search OK! search_count: "  << search_count << endl;
                 SDL_Points.pop_back();
-                /****search test****/
-                for (int i = 0; i < 32; i++) {
-                    for (int j = 0; j < nodes_[i].size(); j++) {
-                        if (State::kPath == nodes_[i][j].state) {
-                            cout << "*, ";
-                        } else {
-                            cout << static_cast<int>(nodes_[i][j].state) << ", ";
-                        }
-                    }
-                    cout << endl;
-                }
-                /****search test****/
+                // /****search test****/
+                // for (int i = 0; i < 32; i++) {
+                //     for (int j = 0; j < nodes_[i].size(); j++) {
+                //         if (State::kPath == nodes_[i][j].state) {
+                //             cout << "*, ";
+                //         } else {
+                //             cout << static_cast<int>(nodes_[i][j].state) << ", ";
+                //         }
+                //     }
+                //     cout << endl;
+                // }
+                // /****search test****/
 
                 return SDL_Points;
             }

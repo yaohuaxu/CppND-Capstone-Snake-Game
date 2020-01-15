@@ -21,6 +21,7 @@ void Snake::Update() {
 
 void Snake::UpdateHead() {
   std::lock_guard<std::mutex> lck(mutex_);
+
   switch (direction_) {
     case Direction::kUp:
       head_y_ -= speed_;

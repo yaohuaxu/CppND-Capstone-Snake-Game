@@ -36,11 +36,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     start.y = snake_.GetHeadX();
     end.x = food_.y;
     end.y = food_.x;
-    start.x = 10;
-    start.y = 10;
-    end.x = food_.y;
-    end.y = food_.x;
-    std::cout << "start.x: " << start.x << ", start.y: " << start.y << ", end.x: " << end.x << ", end.y: " << end.y << std::endl;
+    // std::cout << "start.x: " << start.x << ", start.y: " << start.y << ", end.x: " << end.x << ", end.y: " << end.y << std::endl;
     const std::vector<SDL_Point> path = a_star.Search(start, end);
     renderer.Render(snake_, food_, path);
 
