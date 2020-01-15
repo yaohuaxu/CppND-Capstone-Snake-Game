@@ -20,6 +20,7 @@ void Snake::Update() {
 }
 
 void Snake::UpdateHead() {
+  std::lock_guard<std::mutex> lck(mutex_);
   switch (direction_) {
     case Direction::kUp:
       head_y_ -= speed_;
@@ -44,6 +45,7 @@ void Snake::UpdateHead() {
 }
 
 void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) {
+  std::lock_guard<std::mutex> lck(mutex_);
   // Add previous head location to vector
   body_.push_back(prev_head_cell);
 

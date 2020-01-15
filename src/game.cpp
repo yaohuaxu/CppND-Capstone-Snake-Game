@@ -1,17 +1,19 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
+#include "a_star.h"
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake_(grid_width, grid_height),
       engine_(dev_()),
-      random_w_(0, static_cast<int>(grid_width)),
-      random_h_(0, static_cast<int>(grid_height)) {
+      random_w_(0, static_cast<int>(grid_width - 1)),
+      random_h_(0, static_cast<int>(grid_height - 1)) {
   PlaceFood();
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration) {
+               std::size_t target_frame_duration,
+               const std::size_t grid_width, const std::size_t grid_height) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
@@ -19,13 +21,28 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   bool running = true;
 
+  AStar a_star(grid_width, grid_height);
+  SDL_Point start, end;
+
   while (running) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake_);
     Update();
-    renderer.Render(snake_, food_);
+    AStar a_star(grid_width, grid_height);
+    SDL_Point start, end;
+    start.x = snake_.GetHeadY();
+    start.y = snake_.GetHeadX();
+    end.x = food_.y;
+    end.y = food_.x;
+    start.x = 10;
+    start.y = 10;
+    end.x = food_.y;
+    end.y = food_.x;
+    std::cout << "start.x: " << start.x << ", start.y: " << start.y << ", end.x: " << end.x << ", end.y: " << end.y << std::endl;
+    const std::vector<SDL_Point> path = a_star.Search(start, end);
+    renderer.Render(snake_, food_, path);
 
     frame_end = SDL_GetTicks();
 

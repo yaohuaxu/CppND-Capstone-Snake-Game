@@ -26,8 +26,7 @@ public:
 
 class AStar {
 public:
-    AStar(const std::size_t screen_width, const std::size_t screen_height,
-          const std::size_t grid_width, const std::size_t grid_height);
+    AStar(const std::size_t grid_width, const std::size_t grid_height);
     ~AStar();
     vector<SDL_Point> Search(const SDL_Point &start_point, const SDL_Point &end_point);
 private:

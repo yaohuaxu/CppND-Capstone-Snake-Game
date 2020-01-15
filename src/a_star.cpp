@@ -5,8 +5,7 @@
 using std::cout;
 using std::endl;
 
-AStar::AStar(const std::size_t screen_width, const std::size_t screen_height,
-             const std::size_t grid_width, const std::size_t grid_height) {
+AStar::AStar(const std::size_t grid_width, const std::size_t grid_height) {
 
     open_list_.clear();
     nodes_.clear();
@@ -17,36 +16,36 @@ AStar::AStar(const std::size_t screen_width, const std::size_t screen_height,
         nodes_[i].resize(grid_width);
         for (int j = 0; j < nodes_[i].size(); j++) {
             nodes_[i][j].state = State::kEmpty;
-            cout << static_cast<int>(nodes_[i][j].state) << ", ";
+            // cout << static_cast<int>(nodes_[i][j].state) << ", ";
         }
-        cout << endl;
+        // cout << endl;
     }
 
-    cout << "nodes_.size(): " << nodes_.size() << endl;
-    cout << "nodes_[0].size(): " << nodes_[0].size() << endl;
-/****search test****/
-    SDL_Point start, end;
-    start.x = 0;
-    start.y = 0;
-    end.x = 10;
-    end.y = 10;
-    vector<SDL_Point> SDL_Points = Search(start, end);
+// /****search test****/
+    // cout << "nodes_.size(): " << nodes_.size() << endl;
+    // cout << "nodes_[0].size(): " << nodes_[0].size() << endl;
+//     SDL_Point start, end;
+//     start.x = 0;
+//     start.y = 0;
+//     end.x = 10;
+//     end.y = 10;
+//     vector<SDL_Point> SDL_Points = Search(start, end);
 
-    cout << "SDL_Points.size(): " << SDL_Points.size() << endl;
+//     cout << "SDL_Points.size(): " << SDL_Points.size() << endl;
 
-    for (int i = 0; i < grid_height; i++) {
-        for (int j = 0; j < nodes_[i].size(); j++) {
-            if (State::kPath == nodes_[i][j].state) {
-                cout << "*, ";
-            } else {
-                cout << static_cast<int>(nodes_[i][j].state) << ", ";
-            }
-        }
-        cout << endl;
-    }
-/****search test****/
+//     for (int i = 0; i < grid_height; i++) {
+//         for (int j = 0; j < nodes_[i].size(); j++) {
+//             if (State::kPath == nodes_[i][j].state) {
+//                 cout << "*, ";
+//             } else {
+//                 cout << static_cast<int>(nodes_[i][j].state) << ", ";
+//             }
+//         }
+//         cout << endl;
+//     }
+// /****search test****/
 
-    cout << "AStar is Done" << endl;
+    cout << "AStar is Done\n" << endl;
 }
 
 AStar::~AStar() {
@@ -69,6 +68,7 @@ bool AStar::IsInRange(const int x, const int y) {
 }
 
 vector<SDL_Point> AStar::Search(const SDL_Point &start_point, const SDL_Point &end_point) {
+    open_list_.clear();
     vector<SDL_Point> SDL_Points{};
     SDL_Point SDL_point;
     int search_count = 0;
@@ -117,6 +117,19 @@ vector<SDL_Point> AStar::Search(const SDL_Point &start_point, const SDL_Point &e
 
                 std::reverse(SDL_Points.begin(), SDL_Points.end());
                 cout << "A* search OK! search_count: "  << search_count << endl;
+                SDL_Points.pop_back();
+                /****search test****/
+                for (int i = 0; i < 32; i++) {
+                    for (int j = 0; j < nodes_[i].size(); j++) {
+                        if (State::kPath == nodes_[i][j].state) {
+                            cout << "*, ";
+                        } else {
+                            cout << static_cast<int>(nodes_[i][j].state) << ", ";
+                        }
+                    }
+                    cout << endl;
+                }
+                /****search test****/
 
                 return SDL_Points;
             }
