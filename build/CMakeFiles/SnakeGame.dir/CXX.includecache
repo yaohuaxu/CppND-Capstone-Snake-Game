@@ -19,6 +19,8 @@ vector
 -
 SDL.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/SDL.h
+limits
+-
 
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/controller.cpp
 controller.h
@@ -53,6 +55,8 @@ renderer.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/renderer.h
 snake.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/snake.h
+a_star.h
+/home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/a_star.h
 
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/main.cpp
 iostream
@@ -63,8 +67,6 @@ game.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/game.h
 renderer.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/renderer.h
-a_star.h
-/home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/a_star.h
 
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/renderer.cpp
 renderer.h
@@ -92,6 +94,12 @@ iostream
 
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/snake.h
 vector
+-
+future
+-
+mutex
+-
+algorithm
 -
 SDL.h
 /home/xyh/github_yaohuaxu/CppND-Capstone-Snake-Game/src/SDL.h

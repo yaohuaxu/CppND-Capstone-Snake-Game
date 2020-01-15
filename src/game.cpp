@@ -1,7 +1,7 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
-#include "a_star.h"
+
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake_(grid_width, grid_height),
@@ -21,23 +21,21 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   bool running = true;
 
-  AStar a_star(grid_width, grid_height);
-  SDL_Point start, end;
-
   while (running) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake_);
     Update();
-    AStar a_star(grid_width, grid_height);
+    a_star_.reset(new AStar(grid_width, grid_height));
+    // AStar a_star(grid_width, grid_height);
     SDL_Point start, end;
     start.x = snake_.GetHeadY();
     start.y = snake_.GetHeadX();
     end.x = food_.y;
     end.y = food_.x;
     // std::cout << "start.x: " << start.x << ", start.y: " << start.y << ", end.x: " << end.x << ", end.y: " << end.y << std::endl;
-    const std::vector<SDL_Point> path = a_star.Search(start, end);
+    const std::vector<SDL_Point> path = a_star_->Search(start, end);
     renderer.Render(snake_, food_, path);
 
     frame_end = SDL_GetTicks();
